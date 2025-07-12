@@ -1,19 +1,22 @@
+# Create the complete HTML file with PWA features
+html_content = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salary Calculator - Premium</title>
     <meta name="description" content="Premium salary calculator with tax calculations - works offline!">
-    
+
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Salary Calc">
-    
+    <link rel="manifest" href="manifest.json">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
@@ -336,19 +339,19 @@
             body {
                 padding: 10px;
             }
-            
+
             .calculator-container {
                 max-width: 100%;
             }
-            
+
             .display-section {
                 padding: 25px 20px 15px;
             }
-            
+
             .input-section {
                 padding: 20px;
             }
-            
+
             .result-main {
                 font-size: 28px;
             }
@@ -395,10 +398,10 @@
                 <div class="status-dot" id="statusDot"></div>
                 <span id="statusText">Online</span>
             </div>
-            
+
             <h1 class="calculator-title">💰 Salary Calculator</h1>
             <p class="calculator-subtitle">Premium Tax Calculator</p>
-            
+
             <div class="result-display">
                 <div class="result-main" id="mainResult">$0</div>
                 <div class="result-frequency" id="resultFrequency">Enter salary above</div>
@@ -408,7 +411,7 @@
         <!-- Input Section -->
         <div class="input-section">
             <div class="error-display" id="errorDisplay"></div>
-            
+
             <form id="calculatorForm">
                 <div class="input-grid">
                     <div class="input-group">
@@ -532,7 +535,7 @@
         function updateConnectionStatus() {
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
-            
+
             if (navigator.onLine) {
                 statusDot.classList.remove('offline');
                 statusText.textContent = 'Online';
@@ -546,7 +549,7 @@
             if (taxableIncome <= 0) return 0;
             const adjustedIncome = Math.max(0, taxableIncome - STANDARD_DEDUCTION[filingStatus]);
             let tax = 0, previousBracket = 0;
-            
+
             for (const [bracketLimit, rate] of FEDERAL_TAX_BRACKETS) {
                 if (adjustedIncome <= previousBracket) break;
                 const taxableAtBracket = Math.min(adjustedIncome, bracketLimit) - previousBracket;
@@ -593,19 +596,19 @@
             const max401k2024 = 23000;
             const k401Contrib = Math.min(salary * k401Percent, max401k2024);
             const taxableIncome = salary - k401Contrib;
-            
+
             const federalTax = calculateFederalTax(taxableIncome, filingStatus);
             const ficaTax = calculateFicaTaxes(taxableIncome);
             const stateRate = STATE_TAX_RATES[state] || STATE_TAX_RATES['other'];
             const stateTax = taxableIncome * stateRate;
-            
+
             const totalTaxes = federalTax + ficaTax + stateTax;
             const netAnnualIncome = taxableIncome - totalTaxes;
             const effectiveTaxRate = (totalTaxes / salary * 100);
-            
+
             const frequencyDivisors = { 'annual': 1, 'monthly': 12, 'biweekly': 26, 'weekly': 52 };
             const divisor = frequencyDivisors[frequency] || 1;
-            
+
             return {
                 results: {
                     frequency,
@@ -626,7 +629,7 @@
             // Update main display
             document.getElementById('mainResult').textContent = formatCurrency(results.netIncome);
             document.getElementById('resultFrequency').textContent = results.frequency.toUpperCase();
-            
+
             // Update details
             document.getElementById('detailGross').textContent = formatCurrency(results.grossIncome);
             document.getElementById('detail401k').textContent = formatCurrency(results.k401Contrib);
@@ -635,10 +638,10 @@
             document.getElementById('detailState').textContent = formatCurrency(results.stateTax);
             document.getElementById('detailRate').textContent = `${results.effectiveRate}%`;
             document.getElementById('detailNet').textContent = formatCurrency(results.netIncome);
-            
+
             // Show details section
             document.getElementById('detailsSection').style.display = 'block';
-            
+
             // Save to history and display
             saveToHistory(results);
             displayHistory();
@@ -668,12 +671,12 @@
         function displayHistory() {
             const historySection = document.getElementById('historySection');
             const historyList = document.getElementById('historyList');
-            
+
             if (calculationHistory.length === 0) {
                 historySection.style.display = 'none';
                 return;
             }
-            
+
             historySection.style.display = 'block';
             historyList.innerHTML = calculationHistory.map(item => `
                 <div class="history-item">
@@ -695,22 +698,22 @@
         document.getElementById('calculatorForm').addEventListener('submit', function(e) {
             e.preventDefault();
             clearErrors();
-            
+
             // Add calculating state
             const container = document.querySelector('.calculator-container');
             container.classList.add('calculating');
-            
+
             setTimeout(() => {
                 const formData = new FormData(this);
                 const data = Object.fromEntries(formData.entries());
                 const result = performCalculation(data);
-                
+
                 if (result.errors) {
                     displayErrors(result.errors);
                 } else {
                     displayResults(result.results);
                 }
-                
+
                 container.classList.remove('calculating');
             }, 500);
         });
@@ -718,10 +721,100 @@
         // Initialize
         updateConnectionStatus();
         displayHistory();
-        
+
         // Event listeners
         window.addEventListener('online', updateConnectionStatus);
         window.addEventListener('offline', updateConnectionStatus);
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered:', reg.scope))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
     </script>
 </body>
-</html>
+</html>'''
+
+# Create manifest.json
+manifest_content = '''{
+  "name": "Salary Calculator - Premium",
+  "short_name": "Salary Calc",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Premium salary calculator with tax calculations - works offline!",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}'''
+
+# Create service-worker.js
+service_worker_content = '''const CACHE_NAME = 'salary-calc-v1';
+const ASSETS_TO_CACHE = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png'
+];
+
+// Install event: cache files
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE))
+  );
+  self.skipWaiting();
+});
+
+// Activate event: clean up old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))
+    )
+  );
+  self.clients.claim();
+});
+
+// Fetch event: serve cached files if offline
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response =>
+      response || fetch(event.request)
+    )
+  );
+});'''
+
+# Write all files
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+with open('manifest.json', 'w', encoding='utf-8') as f:
+    f.write(manifest_content)
+
+with open('service-worker.js', 'w', encoding='utf-8') as f:
+    f.write(service_worker_content)
+
+print("✅ PWA files created successfully!")
+print("\n📁 Files generated:")
+print("- index.html (Updated with PWA features)")
+print("- manifest.json (PWA configuration)")
+print("- service-worker.js (Offline functionality)")
+print("\n🎯 Next steps:")
+print("1. Add icon-192.png and icon-512.png to your project")
+print("2. Upload all files to your web server")
+print("3. Test offline functionality in Chrome DevTools")
+print("4. Install on Android via 'Add to Home screen'")
