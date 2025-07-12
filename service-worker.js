@@ -1,16 +1,7 @@
-
-self.addEventListener("install", function(e) {
-  e.waitUntil(
-    caches.open("net-income-cache").then(function(cache) {
-      return cache.addAll(["/", "/index.html", "/manifest.json"]);
-    })
-  );
-});
-
-self.addEventListener("fetch", function(e) {
-  e.respondWith(
-    caches.match(e.request).then(function(response) {
-      return response || fetch(e.request);
-    })
-  );
-});
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(reg => console.log('Service Worker registered:', reg.scope))
+      .catch(err => console.log('Service Worker registration failed:', err));
+  });
+}
