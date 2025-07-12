@@ -1,5 +1,4 @@
-# Create the complete HTML file with PWA features
-html_content = '''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,13 +15,7 @@ html_content = '''<!DOCTYPE html>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #0f0f0f 100%);
@@ -30,7 +23,6 @@ html_content = '''<!DOCTYPE html>
             padding: 20px;
             color: #ffffff;
         }
-
         .calculator-container {
             max-width: 420px;
             margin: 0 auto;
@@ -43,7 +35,6 @@ html_content = '''<!DOCTYPE html>
             overflow: hidden;
             position: relative;
         }
-
         .calculator-container::before {
             content: '';
             position: absolute;
@@ -53,14 +44,12 @@ html_content = '''<!DOCTYPE html>
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
         }
-
         .display-section {
             background: linear-gradient(135deg, #000000, #1a1a1a);
             padding: 30px 25px 20px;
             position: relative;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .calculator-title {
             font-size: 20px;
             font-weight: 600;
@@ -69,7 +58,6 @@ html_content = '''<!DOCTYPE html>
             text-align: center;
             letter-spacing: -0.02em;
         }
-
         .calculator-subtitle {
             font-size: 13px;
             color: #888888;
@@ -77,7 +65,6 @@ html_content = '''<!DOCTYPE html>
             margin-bottom: 25px;
             font-weight: 400;
         }
-
         .status-indicator {
             position: absolute;
             top: 15px;
@@ -88,7 +75,6 @@ html_content = '''<!DOCTYPE html>
             font-size: 11px;
             font-weight: 500;
         }
-
         .status-dot {
             width: 8px;
             height: 8px;
@@ -96,12 +82,10 @@ html_content = '''<!DOCTYPE html>
             background: #10b981;
             box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
         }
-
         .status-dot.offline {
             background: #ef4444;
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
         }
-
         .result-display {
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -111,7 +95,6 @@ html_content = '''<!DOCTYPE html>
             text-align: right;
             margin-bottom: 15px;
         }
-
         .result-main {
             font-size: 32px;
             font-weight: 700;
@@ -120,27 +103,15 @@ html_content = '''<!DOCTYPE html>
             margin-bottom: 8px;
             letter-spacing: -0.02em;
         }
-
         .result-frequency {
             font-size: 12px;
             color: #666666;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
-        .input-section {
-            padding: 25px;
-        }
-
-        .input-grid {
-            display: grid;
-            gap: 18px;
-        }
-
-        .input-group {
-            position: relative;
-        }
-
+        .input-section { padding: 25px; }
+        .input-grid { display: grid; gap: 18px; }
+        .input-group { position: relative; }
         .input-label {
             display: block;
             font-size: 12px;
@@ -150,7 +121,6 @@ html_content = '''<!DOCTYPE html>
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .calculator-input, .calculator-select {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
@@ -163,18 +133,13 @@ html_content = '''<!DOCTYPE html>
             font-family: 'Inter', sans-serif;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .calculator-input:focus, .calculator-select:focus {
             outline: none;
             border-color: #00ff88;
             background: rgba(0, 255, 136, 0.05);
             box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
         }
-
-        .calculator-input::placeholder {
-            color: #555555;
-        }
-
+        .calculator-input::placeholder { color: #555555; }
         .calculator-select {
             cursor: pointer;
             appearance: none;
@@ -184,7 +149,6 @@ html_content = '''<!DOCTYPE html>
             background-size: 16px;
             padding-right: 40px;
         }
-
         .calculate-button {
             width: 100%;
             background: linear-gradient(135deg, #00ff88, #00cc6a);
@@ -201,28 +165,18 @@ html_content = '''<!DOCTYPE html>
             letter-spacing: 0.5px;
             box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
         }
-
         .calculate-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
         }
-
-        .calculate-button:active {
-            transform: translateY(0);
-        }
-
+        .calculate-button:active { transform: translateY(0); }
         .details-section {
             background: rgba(0, 0, 0, 0.2);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             padding: 20px 25px;
             display: none;
         }
-
-        .details-grid {
-            display: grid;
-            gap: 12px;
-        }
-
+        .details-grid { display: grid; gap: 12px; }
         .detail-row {
             display: flex;
             justify-content: space-between;
@@ -230,27 +184,14 @@ html_content = '''<!DOCTYPE html>
             padding: 8px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .detail-row:last-child {
             border-bottom: none;
             padding-top: 12px;
             font-weight: 600;
             color: #00ff88;
         }
-
-        .detail-label {
-            font-size: 13px;
-            color: #aaaaaa;
-            font-weight: 400;
-        }
-
-        .detail-value {
-            font-size: 14px;
-            color: #ffffff;
-            font-weight: 500;
-            font-family: 'Inter', monospace;
-        }
-
+        .detail-label { font-size: 13px; color: #aaaaaa; font-weight: 400; }
+        .detail-value { font-size: 14px; color: #ffffff; font-weight: 500; font-family: 'Inter', monospace; }
         .error-display {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
@@ -261,21 +202,18 @@ html_content = '''<!DOCTYPE html>
             font-size: 14px;
             display: none;
         }
-
         .history-section {
             background: rgba(0, 0, 0, 0.15);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             padding: 20px 25px;
             display: none;
         }
-
         .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
-
         .history-title {
             font-size: 14px;
             font-weight: 600;
@@ -283,7 +221,6 @@ html_content = '''<!DOCTYPE html>
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .clear-history-btn {
             background: rgba(239, 68, 68, 0.2);
             color: #ff6b6b;
@@ -297,11 +234,7 @@ html_content = '''<!DOCTYPE html>
             letter-spacing: 0.5px;
             transition: all 0.2s;
         }
-
-        .clear-history-btn:hover {
-            background: rgba(239, 68, 68, 0.3);
-        }
-
+        .clear-history-btn:hover { background: rgba(239, 68, 68, 0.3); }
         .history-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -309,84 +242,31 @@ html_content = '''<!DOCTYPE html>
             padding: 12px;
             margin-bottom: 8px;
         }
-
-        .history-date {
-            font-size: 11px;
-            color: #666666;
-            margin-bottom: 6px;
-        }
-
+        .history-date { font-size: 11px; color: #666666; margin-bottom: 6px; }
         .history-summary {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        .history-gross {
-            font-size: 12px;
-            color: #aaaaaa;
-        }
-
-        .history-net {
-            font-size: 14px;
-            font-weight: 600;
-            color: #00ff88;
-            font-family: 'Inter', monospace;
-        }
-
-        /* Mobile Responsive */
+        .history-gross { font-size: 12px; color: #aaaaaa; }
+        .history-net { font-size: 14px; font-weight: 600; color: #00ff88; font-family: 'Inter', monospace; }
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
-            .calculator-container {
-                max-width: 100%;
-            }
-
-            .display-section {
-                padding: 25px 20px 15px;
-            }
-
-            .input-section {
-                padding: 20px;
-            }
-
-            .result-main {
-                font-size: 28px;
-            }
+            body { padding: 10px; }
+            .calculator-container { max-width: 100%; }
+            .display-section { padding: 25px 20px 15px; }
+            .input-section { padding: 20px; }
+            .result-main { font-size: 28px; }
         }
-
-        /* Loading animation */
-        .calculating {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
+        .calculating { opacity: 0.7; pointer-events: none; }
         .calculating .calculate-button {
             background: linear-gradient(135deg, #666666, #444444);
             animation: pulse 1.5s ease-in-out infinite;
         }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Subtle animations */
-        .calculator-container {
-            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .calculator-container { animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -398,20 +278,16 @@ html_content = '''<!DOCTYPE html>
                 <div class="status-dot" id="statusDot"></div>
                 <span id="statusText">Online</span>
             </div>
-
             <h1 class="calculator-title">💰 Salary Calculator</h1>
             <p class="calculator-subtitle">Premium Tax Calculator</p>
-
             <div class="result-display">
                 <div class="result-main" id="mainResult">$0</div>
                 <div class="result-frequency" id="resultFrequency">Enter salary above</div>
             </div>
         </div>
-
         <!-- Input Section -->
         <div class="input-section">
             <div class="error-display" id="errorDisplay"></div>
-
             <form id="calculatorForm">
                 <div class="input-grid">
                     <div class="input-group">
@@ -419,7 +295,6 @@ html_content = '''<!DOCTYPE html>
                         <input type="number" id="salary" name="salary" class="calculator-input" 
                                step="0.01" required placeholder="75,000" />
                     </div>
-
                     <div class="input-group">
                         <label class="input-label" for="frequency">Pay Frequency</label>
                         <select id="frequency" name="frequency" class="calculator-select">
@@ -429,7 +304,6 @@ html_content = '''<!DOCTYPE html>
                             <option value="weekly">Weekly</option>
                         </select>
                     </div>
-
                     <div class="input-group">
                         <label class="input-label" for="filingStatus">Filing Status</label>
                         <select id="filingStatus" name="filingStatus" class="calculator-select">
@@ -439,7 +313,6 @@ html_content = '''<!DOCTYPE html>
                             <option value="head_of_household">Head of Household</option>
                         </select>
                     </div>
-
                     <div class="input-group">
                         <label class="input-label" for="state">State</label>
                         <select id="state" name="state" class="calculator-select">
@@ -456,20 +329,17 @@ html_content = '''<!DOCTYPE html>
                             <option value="other" selected>Other</option>
                         </select>
                     </div>
-
                     <div class="input-group">
                         <label class="input-label" for="k401">401(k) Contribution (%)</label>
                         <input type="number" id="k401" name="k401" class="calculator-input" 
                                step="0.1" min="0" max="100" placeholder="6.0" />
                     </div>
                 </div>
-
                 <button type="submit" class="calculate-button" id="calculateBtn">
                     Calculate Take-Home
                 </button>
             </form>
         </div>
-
         <!-- Details Section -->
         <div class="details-section" id="detailsSection">
             <div class="details-grid">
@@ -503,7 +373,6 @@ html_content = '''<!DOCTYPE html>
                 </div>
             </div>
         </div>
-
         <!-- History Section -->
         <div class="history-section" id="historySection">
             <div class="history-header">
@@ -513,29 +382,24 @@ html_content = '''<!DOCTYPE html>
             <div id="historyList"></div>
         </div>
     </div>
-
     <script>
         // Tax calculation constants and functions
         const FEDERAL_TAX_BRACKETS = [
             [11000, 0.10], [44725, 0.12], [95375, 0.22], [182050, 0.24],
             [231250, 0.32], [578125, 0.35], [Infinity, 0.37]
         ];
-
         const STANDARD_DEDUCTION = {
             'single': 14600, 'married_filing_jointly': 29200,
             'married_filing_separately': 14600, 'head_of_household': 21900
         };
-
         const STATE_TAX_RATES = {
             'california': 0.13, 'texas': 0.0, 'florida': 0.0, 'new_york': 0.10,
             'illinois': 0.05, 'pennsylvania': 0.03, 'ohio': 0.05, 'georgia': 0.06,
             'north_carolina': 0.05, 'michigan': 0.04, 'other': 0.05
         };
-
         function updateConnectionStatus() {
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
-
             if (navigator.onLine) {
                 statusDot.classList.remove('offline');
                 statusText.textContent = 'Online';
@@ -544,12 +408,10 @@ html_content = '''<!DOCTYPE html>
                 statusText.textContent = 'Offline';
             }
         }
-
         function calculateFederalTax(taxableIncome, filingStatus) {
             if (taxableIncome <= 0) return 0;
             const adjustedIncome = Math.max(0, taxableIncome - STANDARD_DEDUCTION[filingStatus]);
             let tax = 0, previousBracket = 0;
-
             for (const [bracketLimit, rate] of FEDERAL_TAX_BRACKETS) {
                 if (adjustedIncome <= previousBracket) break;
                 const taxableAtBracket = Math.min(adjustedIncome, bracketLimit) - previousBracket;
@@ -559,7 +421,6 @@ html_content = '''<!DOCTYPE html>
             }
             return tax;
         }
-
         function calculateFicaTaxes(income) {
             const ssLimit = 160200;
             const ssTax = Math.min(income, ssLimit) * 0.062;
@@ -567,7 +428,6 @@ html_content = '''<!DOCTYPE html>
             const additionalMedicare = Math.max(0, income - 200000) * 0.009;
             return ssTax + medicareTax + additionalMedicare;
         }
-
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -576,39 +436,31 @@ html_content = '''<!DOCTYPE html>
                 maximumFractionDigits: 0
             }).format(amount);
         }
-
         function performCalculation(formData) {
             const salary = parseFloat(formData.salary) || 0;
             const frequency = formData.frequency || 'annual';
             const k401Percent = (parseFloat(formData.k401) || 0) / 100;
             const filingStatus = formData.filingStatus || 'single';
             const state = formData.state || 'other';
-
             // Validation
             const errors = [];
             if (salary <= 0) errors.push("Salary must be greater than 0");
             if (salary > 10000000) errors.push("Salary seems unreasonably high");
             if (k401Percent < 0 || k401Percent > 1) errors.push("401(k) contribution must be between 0% and 100%");
-
             if (errors.length > 0) return { errors };
-
             // Calculations
             const max401k2024 = 23000;
             const k401Contrib = Math.min(salary * k401Percent, max401k2024);
             const taxableIncome = salary - k401Contrib;
-
             const federalTax = calculateFederalTax(taxableIncome, filingStatus);
             const ficaTax = calculateFicaTaxes(taxableIncome);
             const stateRate = STATE_TAX_RATES[state] || STATE_TAX_RATES['other'];
             const stateTax = taxableIncome * stateRate;
-
             const totalTaxes = federalTax + ficaTax + stateTax;
             const netAnnualIncome = taxableIncome - totalTaxes;
             const effectiveTaxRate = (totalTaxes / salary * 100);
-
             const frequencyDivisors = { 'annual': 1, 'monthly': 12, 'biweekly': 26, 'weekly': 52 };
             const divisor = frequencyDivisors[frequency] || 1;
-
             return {
                 results: {
                     frequency,
@@ -624,12 +476,10 @@ html_content = '''<!DOCTYPE html>
                 }
             };
         }
-
         function displayResults(results) {
             // Update main display
             document.getElementById('mainResult').textContent = formatCurrency(results.netIncome);
             document.getElementById('resultFrequency').textContent = results.frequency.toUpperCase();
-
             // Update details
             document.getElementById('detailGross').textContent = formatCurrency(results.grossIncome);
             document.getElementById('detail401k').textContent = formatCurrency(results.k401Contrib);
@@ -638,45 +488,36 @@ html_content = '''<!DOCTYPE html>
             document.getElementById('detailState').textContent = formatCurrency(results.stateTax);
             document.getElementById('detailRate').textContent = `${results.effectiveRate}%`;
             document.getElementById('detailNet').textContent = formatCurrency(results.netIncome);
-
             // Show details section
             document.getElementById('detailsSection').style.display = 'block';
-
             // Save to history and display
             saveToHistory(results);
             displayHistory();
         }
-
         function displayErrors(errors) {
             const errorDisplay = document.getElementById('errorDisplay');
             errorDisplay.innerHTML = errors.map(error => `• ${error}`).join('<br>');
             errorDisplay.style.display = 'block';
             document.getElementById('detailsSection').style.display = 'none';
         }
-
         function clearErrors() {
             document.getElementById('errorDisplay').style.display = 'none';
         }
-
         // History management
         let calculationHistory = [];
-
         function saveToHistory(results) {
             calculationHistory.unshift({ ...results, id: Date.now() });
             if (calculationHistory.length > 10) {
                 calculationHistory = calculationHistory.slice(0, 10);
             }
         }
-
         function displayHistory() {
             const historySection = document.getElementById('historySection');
             const historyList = document.getElementById('historyList');
-
             if (calculationHistory.length === 0) {
                 historySection.style.display = 'none';
                 return;
             }
-
             historySection.style.display = 'block';
             historyList.innerHTML = calculationHistory.map(item => `
                 <div class="history-item">
@@ -688,40 +529,32 @@ html_content = '''<!DOCTYPE html>
                 </div>
             `).join('');
         }
-
         function clearHistory() {
             calculationHistory = [];
             displayHistory();
         }
-
         // Form handling
         document.getElementById('calculatorForm').addEventListener('submit', function(e) {
             e.preventDefault();
             clearErrors();
-
             // Add calculating state
             const container = document.querySelector('.calculator-container');
             container.classList.add('calculating');
-
             setTimeout(() => {
                 const formData = new FormData(this);
                 const data = Object.fromEntries(formData.entries());
                 const result = performCalculation(data);
-
                 if (result.errors) {
                     displayErrors(result.errors);
                 } else {
                     displayResults(result.results);
                 }
-
                 container.classList.remove('calculating');
             }, 500);
         });
-
         // Initialize
         updateConnectionStatus();
         displayHistory();
-
         // Event listeners
         window.addEventListener('online', updateConnectionStatus);
         window.addEventListener('offline', updateConnectionStatus);
@@ -736,85 +569,4 @@ html_content = '''<!DOCTYPE html>
         }
     </script>
 </body>
-</html>'''
-
-# Create manifest.json
-manifest_content = '''{
-  "name": "Salary Calculator - Premium",
-  "short_name": "Salary Calc",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
-  "description": "Premium salary calculator with tax calculations - works offline!",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}'''
-
-# Create service-worker.js
-service_worker_content = '''const CACHE_NAME = 'salary-calc-v1';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
-];
-
-// Install event: cache files
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE))
-  );
-  self.skipWaiting();
-});
-
-// Activate event: clean up old caches
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))
-    )
-  );
-  self.clients.claim();
-});
-
-// Fetch event: serve cached files if offline
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response =>
-      response || fetch(event.request)
-    )
-  );
-});'''
-
-# Write all files
-with open('index.html', 'w', encoding='utf-8') as f:
-    f.write(html_content)
-
-with open('manifest.json', 'w', encoding='utf-8') as f:
-    f.write(manifest_content)
-
-with open('service-worker.js', 'w', encoding='utf-8') as f:
-    f.write(service_worker_content)
-
-print("✅ PWA files created successfully!")
-print("\n📁 Files generated:")
-print("- index.html (Updated with PWA features)")
-print("- manifest.json (PWA configuration)")
-print("- service-worker.js (Offline functionality)")
-print("\n🎯 Next steps:")
-print("1. Add icon-192.png and icon-512.png to your project")
-print("2. Upload all files to your web server")
-print("3. Test offline functionality in Chrome DevTools")
-print("4. Install on Android via 'Add to Home screen'")
+</html>
