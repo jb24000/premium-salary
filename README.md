@@ -26,6 +26,7 @@
 ## 📁 Project Structure
 
 premium-salary/
+
 ├── index.html # Main interface
 
 ├── style.css # App styles
