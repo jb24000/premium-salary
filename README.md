@@ -27,10 +27,15 @@
 
 premium-salary/
 ├── index.html # Main interface
+
 ├── style.css # App styles
+
 ├── script.js # Core logic
+
 ├── manifest.json # PWA metadata
+
 ├── service-worker.js # Offline support
+
 └── /icons # App icons
 
 
